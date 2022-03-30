@@ -6,7 +6,7 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.applications.vgg19 import VGG19
 from .normalize import normalize, denormalize
 from .loss_functions import content_loss, style_loss, total_variation_loss
-
+from skimage.color import gray2rgb, rgb2gray  # LAH
 
 # the template for the class's __repr__ method
 TEMPLATE = """{}(
@@ -311,3 +311,15 @@ class Stylizer(object):
 
 # explicitly define the outward facing API of this module
 __all__ = [Stylizer.__name__]
+
+
+# LAH
+def transformColorMode(img, color_mode):
+    assert color_mode in ['rgb', 'gray']
+    if color_mode == 'gray':
+        if len(img.shape) == 3:
+            img = rgb2gray(img)
+    elif color_mode == 'rgb':
+        if len(img.shape) == 2:
+            img = gray2rgb(img)
+    return img
